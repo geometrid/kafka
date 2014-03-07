@@ -29,7 +29,7 @@ class KafkaProject(info: ProjectInfo) extends ParentProject(info) with IdeaProje
 
   val releaseZipDescription = "Compiles every sub project, runs unit tests, creates a deployable release zip file with dependencies, config, and scripts."
   lazy val releaseZip = releaseZipTask dependsOn(core.corePackageAction, core.test, examples.examplesPackageAction,
-    contrib.producerPackageAction, contrib.consumerPackageAction) describedAs releaseZipDescription
+    contrib.consumerPackageAction) describedAs releaseZipDescription
 
   val runRatDescription = "Runs Apache rat on Kafka"
   lazy val runRatTask = task {
@@ -168,35 +168,10 @@ class KafkaProject(info: ProjectInfo) extends ParentProject(info) with IdeaProje
   }
 
   class ContribProject(info: ProjectInfo) extends ParentProject(info) with IdeaProject {
-    lazy val hadoopProducer = project("hadoop-producer", "hadoop producer",
-                                      new HadoopProducerProject(_), core)
     lazy val hadoopConsumer = project("hadoop-consumer", "hadoop consumer",
                                       new HadoopConsumerProject(_), core)
 
-    val producerPackageAction = hadoopProducer.producerPackageAction
     val consumerPackageAction = hadoopConsumer.consumerPackageAction
-
-    class HadoopProducerProject(info: ProjectInfo) extends DefaultProject(info)
-      with IdeaProject
-      with CoreDependencies with HadoopDependencies {
-      val producerPackageAction = packageAllAction
-      override def ivyXML =
-       <dependencies>
-         <exclude module="netty"/>
-           <exclude module="javax"/>
-           <exclude module="jmxri"/>
-           <exclude module="jmxtools"/>
-           <exclude module="mail"/>
-           <exclude module="jms"/>
-         <dependency org="org.apache.hadoop" name="hadoop-core" rev="0.20.2">
-           <exclude module="junit"/>
-         </dependency>
-         <dependency org="org.apache.pig" name="pig" rev="0.8.0">
-           <exclude module="junit"/>
-         </dependency>
-       </dependencies>
-
-    }
 
     class HadoopConsumerProject(info: ProjectInfo) extends DefaultProject(info)
       with IdeaProject
@@ -211,7 +186,13 @@ class KafkaProject(info: ProjectInfo) extends ParentProject(info) with IdeaProje
            <exclude module="mail"/>
            <exclude module="jms"/>
            <exclude module=""/>
-         <dependency org="org.apache.hadoop" name="hadoop-core" rev="0.20.2">
+         <dependency org="org.apache.hadoop" name="hadoop-client" rev="2.2.0">
+           <exclude module="junit"/>
+         </dependency>
+         <dependency org="org.apache.hadoop" name="hadoop-common" rev="2.2.0">
+           <exclude module="junit"/>
+         </dependency>
+         <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-core" rev="2.2.0">
            <exclude module="junit"/>
          </dependency>
          <dependency org="org.apache.pig" name="pig" rev="0.8.0">
@@ -239,7 +220,9 @@ class KafkaProject(info: ProjectInfo) extends ParentProject(info) with IdeaProje
     val commonsLogging = "commons-logging" % "commons-logging" % "1.0.4"
     val jacksonCore = "org.codehaus.jackson" % "jackson-core-asl" % "1.5.5"
     val jacksonMapper = "org.codehaus.jackson" % "jackson-mapper-asl" % "1.5.5"
-    val hadoop = "org.apache.hadoop" % "hadoop-core" % "0.20.2"
+    val hadoopClient = "org.apache.hadoop" % "hadoop-client" % "2.2.0"
+    val hadoopCommon = "org.apache.hadoop" % "hadoop-common" % "2.2.0"
+    val hadoopMR = "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.2.0"
   }
 
   trait CompressionDependencies {

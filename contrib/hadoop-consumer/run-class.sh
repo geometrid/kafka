@@ -50,7 +50,11 @@ CLASSPATH=$CLASSPATH:$base_dir/project/boot/scala-2.8.0/lib/scala-library.jar
 
 echo $CLASSPATH
 
-CLASSPATH=dist:$CLASSPATH:${HADOOP_HOME}/conf
+#CLASSPATH=dist:$CLASSPATH:${HADOOP_HOME}/conf
+
+#CLASSPATH=/etc/hadoop/conf:/usr/lib/hadoop/lib/*:/usr/lib/hadoop/.//*:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/*:/usr/lib/hadoop-hdfs/.//*:/usr/lib/hadoop-yarn/lib/*:/usr/lib/hadoop-yarn/.//*:/usr/lib/hadoop-mapreduce/lib/*:/usr/lib/hadoop-mapreduce/.//*::/usr/lib/hadoop-mapreduce/*:$CLASSPATH
+
+CLASSPATH=$CLASSPATH:/etc/hadoop/conf:/usr/lib/hadoop/lib/*:/usr/lib/hadoop/.//*:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/*:/usr/lib/hadoop-hdfs/.//*:/usr/lib/hadoop-yarn/lib/*:/usr/lib/hadoop-yarn/.//*:/usr/lib/hadoop-mapreduce/lib/*:/usr/lib/hadoop-mapreduce/.//*::/usr/lib/hadoop-mapreduce/*
 
 #if [ -z "$KAFKA_OPTS" ]; then
 #  KAFKA_OPTS="-Xmx512M -server -Dcom.sun.management.jmxremote"

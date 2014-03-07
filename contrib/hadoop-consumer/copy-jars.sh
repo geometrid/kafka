@@ -22,10 +22,10 @@ fi
 
 base_dir=$(dirname $0)/../..
 
-hadoop=${HADOOP_HOME}/bin/hadoop
+hadoop=/usr/bin/hadoop
 
-echo "$hadoop fs -rmr $1"
-$hadoop fs -rmr $1
+echo "$hadoop fs -rm -r -skipTrash $1"
+$hadoop fs -rm -r -skipTrash $1
 
 echo "$hadoop fs -mkdir $1"
 $hadoop fs -mkdir $1

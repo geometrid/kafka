@@ -104,21 +104,23 @@ public class DataGenerator {
         JobConf conf = new JobConf();
         conf.set("hadoop.job.ugi", _props.getProperty("hadoop.job.ugi"));
         conf.setCompressMapOutput(false);
-        Path outPath = new Path(_offsetsDir + Path.SEPARATOR + "1.dat");
-        FileSystem fs = outPath.getFileSystem(conf);
-        if (fs.exists(outPath)) fs.delete(outPath);
-        
-        KafkaETLRequest request =
-            new KafkaETLRequest(_topic, "tcp://" + _uri.getHost() + ":" + _uri.getPort(), 0);
+       
+        for (int partition = 0; partition < 16; partition++) { 
+          Path outPath = new Path(_offsetsDir + Path.SEPARATOR + partition + ".dat");
+          FileSystem fs = outPath.getFileSystem(conf);
+          if (fs.exists(outPath)) fs.delete(outPath);
+          KafkaETLRequest request =
+              new KafkaETLRequest(_topic, "tcp://" + _uri.getHost() + ":" + _uri.getPort(), partition);
 
-        System.out.println("Dump " + request.toString() + " to " + outPath.toUri().toString());
-        byte[] bytes = request.toString().getBytes("UTF-8");
-        KafkaETLKey dummyKey = new KafkaETLKey();
-        SequenceFile.setCompressionType(conf, SequenceFile.CompressionType.NONE);
-        SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf, outPath, 
+          System.out.println("Dump " + request.toString() + " to " + outPath.toUri().toString());
+          byte[] bytes = request.toString().getBytes("UTF-8");
+          KafkaETLKey dummyKey = new KafkaETLKey();
+          // SequenceFile.setCompressionType(conf, SequenceFile.CompressionType.NONE);
+          SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf, outPath, 
                                         KafkaETLKey.class, BytesWritable.class);
-        writer.append(dummyKey, new BytesWritable(bytes));
-        writer.close();
+          writer.append(dummyKey, new BytesWritable(bytes));
+          writer.close();
+      }
     }
     
 	public static void main(String[] args) throws Exception {

@@ -112,6 +112,7 @@ public class KafkaETLContext {
         System.out.println("Connected to node " + uri 
                 + " beginning reading at offset " + _offsetRange[0]
                 + " latest offset=" + _offsetRange[1]);
+        System.out.println("input = " + input);
 
         _offset = _offsetRange[0];
         _count = 0;
@@ -176,6 +177,7 @@ public class KafkaETLContext {
         if (_consumer != null) _consumer.close();
         
         String topic = _request.getTopic();
+        System.out.println("topic = " + topic);
         long endTime = System.currentTimeMillis();
         _reporter.incrCounter(topic, "read-time(ms)", endTime - _startTime);
         _reporter.incrCounter(topic, "request-time(ms)", _requestTime);

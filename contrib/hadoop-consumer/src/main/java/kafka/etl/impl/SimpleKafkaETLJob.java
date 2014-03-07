@@ -75,7 +75,7 @@ public class SimpleKafkaETLJob {
     public void execute () throws Exception {
         JobConf conf = createJobConf();
         RunningJob runningJob = new JobClient(conf).submitJob(conf);
-        String id = runningJob.getJobID();
+        String id = runningJob.getID().toString();
         System.out.println("Hadoop job id=" + id);
         runningJob.waitForCompletion();
         

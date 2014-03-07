@@ -1,3 +1,11 @@
+# Important notes #
+
+This fork allows the contrib/hadoop-consumer to play nice with hadoop 2. The most notable change from 0.7.1 of apache/kafka is that:
+
+* project/build/KafkaProject.scala has been updated to include the necessary hadoop 2 client libs
+
+There are also a few other modifications (e.g. hardcoded 16 partitions into contrib/hadoop-consumer/src/main/java/kafka/etl/impl/DataGenerator.java) for my specific situation.
+
 # Kafka is a distributed publish/subscribe messaging system #
 
 It is designed to support the following

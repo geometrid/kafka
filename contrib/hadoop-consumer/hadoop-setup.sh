@@ -14,7 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-hadoop=${HADOOP_HOME}/bin/hadoop
-
-$hadoop fs -chmod ugoa+w /tmp
+hadoop fs -chmod ugoa+w /tmp
 
