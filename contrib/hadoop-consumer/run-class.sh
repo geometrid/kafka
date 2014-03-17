@@ -28,6 +28,12 @@ do
   CLASSPATH=$CLASSPATH:$file
 done
 
+#/usr/local/share/kafka/core/lib_managed/scala_2.8.0/compile/zkclient-0.1.jar
+for file in $base_dir/core/lib_managed/scala_2.8.0/compile/zkclient-*.jar
+do
+  CLASSPATH=$CLASSPATH:$file
+done
+
 for file in $base_dir/contrib/hadoop-consumer/lib_managed/scala_2.8.0/compile/*.jar;
 do
   CLASSPATH=$CLASSPATH:$file
